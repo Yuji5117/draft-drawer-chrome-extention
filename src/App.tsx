@@ -1,9 +1,12 @@
+import { Header } from "./components/Header";
+
 function App() {
   return (
-    <>
-      <div className="bg-slate-600">test</div>
-      <h1 className="text-red-700">text</h1>
-    </>
+    <div className="w-[400px] y-[700px]">
+      {/* Header */}
+      <Header />
+      {/* Dashboard */}
+    </div>
   );
 }
 
