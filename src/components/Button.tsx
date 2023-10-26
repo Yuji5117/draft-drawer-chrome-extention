@@ -25,7 +25,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={`rounded-md hover:opacity-80 ${variants[variant]} ${sizes[size]}}`}
+      className={`rounded-md hover:opacity-80 ${variants[variant]} ${sizes[size]}`}
       {...props}
     >
       {children}

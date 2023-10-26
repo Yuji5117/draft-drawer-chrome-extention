@@ -22,5 +22,5 @@ export const Text = ({
   variant = "default",
   size = "md",
 }: TextProps) => {
-  return <p className={`${variant} ${size}`}>{children}</p>;
+  return <p className={`${variants[variant]} ${[sizes[size]]}`}>{children}</p>;
 };
