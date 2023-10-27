@@ -1,7 +1,13 @@
 import { Button } from "./Button";
 import { Text } from "./Text";
 
-export const TemplateContent = () => {
+import { Template } from "@/types";
+
+type TemplateContentProps = {
+  displayTemplate?: Template;
+};
+
+export const TemplateContent = ({ displayTemplate }: TemplateContentProps) => {
   return (
     <div className="flex flex-col mx-5">
       <div className="h-16 flex items-center justify-end space-x-3">
@@ -15,7 +21,9 @@ export const TemplateContent = () => {
 
       <div className="w-full h-60 overflow-y-scroll">
         <Text size="sm" className="break-words">
-          TEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTETEXTTEXTTEXTTEXTTEXTTEXTTE
+          {displayTemplate
+            ? displayTemplate.content
+            : "テンプレートが選択されていません"}
         </Text>
       </div>
     </div>
