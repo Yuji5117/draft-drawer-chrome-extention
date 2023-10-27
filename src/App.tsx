@@ -37,11 +37,18 @@ function App() {
             <ul className="mr-2">
               {templates.map((template) => (
                 <li
-                  onClick={() => handleSelectTemplateClick(template.id)}
-                  className="h-10"
+                  className={`h-10 ${
+                    template.id === selectedId
+                      ? "opacity-60 bg-green-200 rounded-lg"
+                      : ""
+                  }`}
                   key={template.id}
                 >
-                  <TemplateItem title={template.title} />
+                  <TemplateItem
+                    id={template.id}
+                    title={template.title}
+                    handleSelectTemplateClick={handleSelectTemplateClick}
+                  />
                 </li>
               ))}
             </ul>
