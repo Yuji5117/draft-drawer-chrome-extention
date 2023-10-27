@@ -22,6 +22,10 @@ function App() {
     (template) => template.id === selectedId
   );
 
+  const handleSelectTemplateClick = (id: string) => {
+    setSectedId(id);
+  };
+
   return (
     <div className="w-[700px] h-[400px] bg-white">
       {/* Header */}
@@ -32,7 +36,11 @@ function App() {
           <div className="w-[45%] h-[315px] overflow-scroll">
             <ul className="mr-2">
               {templates.map((template) => (
-                <li className="h-10" key={template.id}>
+                <li
+                  onClick={() => handleSelectTemplateClick(template.id)}
+                  className="h-10"
+                  key={template.id}
+                >
                   <TemplateItem title={template.title} />
                 </li>
               ))}
