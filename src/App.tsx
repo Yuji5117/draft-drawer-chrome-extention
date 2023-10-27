@@ -41,6 +41,9 @@ function App() {
     event?.preventDefault();
 
     const { title, content } = data;
+
+    if (!data.title) return;
+
     const id = (templates.length + 1).toString();
     setTemplates([...templates, { id, title, content }]);
     setStatus("READ");
