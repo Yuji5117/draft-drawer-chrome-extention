@@ -3,3 +3,7 @@ export type Template = {
   title: string;
   content: string;
 };
+
+export type TemplateFormValues = Pick<Template, "title" | "content">;
+
+export type Status = "READ" | "ADD" | "EDIT";
