@@ -4,7 +4,13 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { SearchIcon } from "./SearchIcon";
 import { SearchInputField } from "./SearchInputField";
 
-export const Header = () => {
+import { Status } from "@/types";
+
+type HeaderProps = {
+  handleChangeStatusClick: (status: Status) => void;
+};
+
+export const Header = ({ handleChangeStatusClick }: HeaderProps) => {
   const { register } = useForm();
   return (
     <div className="bg-primary h-12 text-sm">
@@ -14,7 +20,7 @@ export const Header = () => {
           <SearchInputField registration={register("query")} />
         </div>
         {/* Add Button */}
-        <div role="button" className="flex items-center space-x-1">
+        <div onClick={() => handleChangeStatusClick("ADD")} role="button" className="flex items-center space-x-1">
           <IoIosAddCircleOutline size={15} color="white" />
           <span className="text-white">New Template</span>
         </div>

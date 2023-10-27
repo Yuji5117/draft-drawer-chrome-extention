@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { SubmitHandler } from "react-hook-form";
 
 import { Header } from "./components/Header";
 import { TemplateContent } from "./components/TemplateContent";
 import { TemplateItem } from "./components/TemplateItem";
-import { Template } from "./types";
+import { Status, Template, TemplateFormValues } from "./types";
 
 const initalTemplates: Template[] = [
   { id: "1", title: "test", content: "testしました。" },
@@ -17,6 +18,7 @@ const initalTemplates: Template[] = [
 function App() {
   const [templates, setTemplates] = useState(initalTemplates);
   const [selectedId, setSectedId] = useState("");
+  const [status, setStatus] = useState<Status>("READ");
 
   const displayTemplate = templates.find(
     (template) => template.id === selectedId
@@ -24,12 +26,31 @@ function App() {
 
   const handleSelectTemplateClick = (id: string) => {
     setSectedId(id);
+    setStatus("READ");
+  };
+
+  const handleChangeStatusClick = (status: Status) => {
+    setStatus(status);
+    setSectedId("");
+  };
+
+  const onAddNewTemplateSubmit: SubmitHandler<TemplateFormValues> = (
+    data,
+    event
+  ) => {
+    event?.preventDefault();
+
+    const { title, content } = data;
+    const id = (templates.length + 1).toString();
+    setTemplates([...templates, { id, title, content }]);
+    setStatus("READ");
+    setSectedId(id);
   };
 
   return (
     <div className="w-[700px] h-[400px] bg-white">
       {/* Header */}
-      <Header />
+      <Header handleChangeStatusClick={handleChangeStatusClick} />
       {/* Dashboard */}
       <main className="w-full">
         <div className="flex mx-6 py-3">
@@ -54,7 +75,11 @@ function App() {
             </ul>
           </div>
           <div className="w-[55%] h-[315px] border rounded-md">
-            <TemplateContent displayTemplate={displayTemplate} />
+            <TemplateContent
+              onAddNewTemplateSubmit={onAddNewTemplateSubmit}
+              status={status}
+              displayTemplate={displayTemplate}
+            />
           </div>
         </div>
       </main>
