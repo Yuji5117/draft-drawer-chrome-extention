@@ -1,4 +1,5 @@
 import { Header } from "./components/Header";
+import { TemplateContent } from "./components/TemplateContent";
 import { TemplateItem } from "./components/TemplateItem";
 
 const templates = [
@@ -29,7 +30,9 @@ function App() {
               ))}
             </ul>
           </div>
-          <div className="bg-rose-400 w-[55%] h-[315px] "></div>
+          <div className="w-[55%] h-[315px] border rounded-md">
+            <TemplateContent />
+          </div>
         </div>
       </main>
     </div>
