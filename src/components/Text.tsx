@@ -15,12 +15,18 @@ type TextProps = {
   children: React.ReactNode;
   variant?: keyof typeof variants;
   size?: keyof typeof sizes;
+  className?: string;
 };
 
 export const Text = ({
   children,
   variant = "default",
   size = "md",
+  className = "",
 }: TextProps) => {
-  return <p className={`${variants[variant]} ${[sizes[size]]}`}>{children}</p>;
+  return (
+    <p className={`${variants[variant]} ${[sizes[size]]} ${className}`}>
+      {children}
+    </p>
+  );
 };
