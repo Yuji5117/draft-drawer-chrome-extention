@@ -1,5 +1,8 @@
-export type Template = {
+export type BaseEntity = {
   id: string;
+};
+
+export type Template = BaseEntity & {
   title: string;
   content: string;
 };
