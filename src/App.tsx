@@ -83,8 +83,7 @@ function App() {
                   key={template.id}
                 >
                   <TemplateItem
-                    id={template.id}
-                    title={template.title}
+                    template={template}
                     handleSelectTemplateClick={handleSelectTemplateClick}
                   />
                 </li>
