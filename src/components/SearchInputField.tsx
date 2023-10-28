@@ -1,8 +1,8 @@
 import { UseFormRegisterReturn } from "react-hook-form";
 
 type SearchInputFieldProps = React.HtmlHTMLAttributes<HTMLInputElement> & {
-  placeholder?: string;
   registration: Partial<UseFormRegisterReturn>;
+  placeholder?: string;
 };
 
 export const SearchInputField = ({

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 
 import { Header } from "./components/Header";
@@ -19,6 +19,7 @@ function App() {
   const [templates, setTemplates] = useState(initalTemplates);
   const [selectedId, setSectedId] = useState("");
   const [status, setStatus] = useState<Status>("READ");
+  const [keyword, setKeyword] = useState("");
 
   const displayTemplate = templates.find(
     (template) => template.id === selectedId
@@ -33,6 +34,16 @@ function App() {
     setStatus(status);
     setSectedId("");
   };
+
+  const onChangeKeyword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(event.target.value);
+  };
+
+  const filteredTemplates: Template[] = templates.filter((template) =>
+    template.title.includes(keyword)
+  );
+
+  const displayTemplates: Template[] = keyword ? filteredTemplates : templates;
 
   const onAddNewTemplateSubmit: SubmitHandler<TemplateFormValues> = (
     data,
@@ -53,13 +64,16 @@ function App() {
   return (
     <div className="w-[700px] h-[400px] bg-white">
       {/* Header */}
-      <Header handleChangeStatusClick={handleChangeStatusClick} />
+      <Header
+        onChangeKeyword={onChangeKeyword}
+        handleChangeStatusClick={handleChangeStatusClick}
+      />
       {/* Dashboard */}
       <main className="w-full">
         <div className="flex mx-6 py-3">
           <div className="w-[45%] h-[315px] overflow-scroll">
             <ul className="mr-2">
-              {templates.map((template) => (
+              {displayTemplates.map((template) => (
                 <li
                   className={`h-10 ${
                     template.id === selectedId
