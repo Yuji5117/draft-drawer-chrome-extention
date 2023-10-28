@@ -4,7 +4,7 @@ import { SubmitHandler } from "react-hook-form";
 import { Header } from "./components/Header";
 import { TemplateContentDisplay } from "./components/TemplateContentDisplay";
 import { TemplateCreateContent } from "./components/TemplateCreateContent";
-import { TemplateItem } from "./components/TemplateItem";
+import { Templates } from "./components/Templates";
 import { Status, Template, TemplateFormValues } from "./types";
 
 const initalTemplates: Template[] = [
@@ -71,24 +71,13 @@ function App() {
       <main className="w-full">
         <div className="flex mx-6 py-3">
           <div className="w-[45%] h-[315px] overflow-scroll">
-            <ul className="mr-2">
-              {displayTemplates.map((template) => (
-                <li
-                  className={`h-10 ${
-                    template.id === selectedId
-                      ? "opacity-60 bg-green-200 rounded-lg"
-                      : ""
-                  }`}
-                  key={template.id}
-                >
-                  <TemplateItem
-                    template={template}
-                    handleSelectTemplateClick={handleSelectTemplateClick}
-                  />
-                </li>
-              ))}
-            </ul>
+            <Templates
+              templates={displayTemplates}
+              selectedId={selectedId}
+              handleSelectTemplateClick={handleSelectTemplateClick}
+            />
           </div>
+
           <div className="w-[55%] h-[315px] border rounded-md">
             {status === "ADD" ? (
               <TemplateCreateContent
