@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 
 import { Header } from "./components/Header";
-import { TemplateContentDisplay } from "./components/TemplateContentDisplay";
-import { TemplateCreateContent } from "./components/TemplateCreateContent";
+import { TemplateContent } from "./components/TemplateContent";
 import { Templates } from "./components/Templates";
 import { Status, Template, TemplateFormValues } from "./types";
 
@@ -79,13 +78,11 @@ function App() {
           </div>
 
           <div className="w-[55%] h-[315px] border rounded-md">
-            {status === "ADD" ? (
-              <TemplateCreateContent
-                onAddNewTemplateSubmit={onAddNewTemplateSubmit}
-              />
-            ) : (
-              <TemplateContentDisplay content={displayTemplateContent} />
-            )}
+            <TemplateContent
+              status={status}
+              content={displayTemplateContent}
+              onAddNewTemplateSubmit={onAddNewTemplateSubmit}
+            />
           </div>
         </div>
       </main>
