@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 
 import { Header } from "./components/Header";
-import { TemplateContent } from "./components/TemplateContent";
+import { TemplateContentDisplay } from "./components/TemplateContentDisplay";
+import { TemplateCreateContent } from "./components/TemplateCreateContent";
 import { TemplateItem } from "./components/TemplateItem";
 import { Status, Template, TemplateFormValues } from "./types";
 
@@ -21,9 +22,9 @@ function App() {
   const [status, setStatus] = useState<Status>("READ");
   const [keyword, setKeyword] = useState("");
 
-  const displayTemplate = templates.find(
-    (template) => template.id === selectedId
-  );
+  const displayTemplateContent = selectedId
+    ? templates.find((template) => template.id === selectedId)?.content ?? ""
+    : "テンプレートが選択されていません";
 
   const handleSelectTemplateClick = (id: string) => {
     setSectedId(id);
@@ -91,11 +92,13 @@ function App() {
             </ul>
           </div>
           <div className="w-[55%] h-[315px] border rounded-md">
-            <TemplateContent
-              onAddNewTemplateSubmit={onAddNewTemplateSubmit}
-              status={status}
-              displayTemplate={displayTemplate}
-            />
+            {status === "ADD" ? (
+              <TemplateCreateContent
+                onAddNewTemplateSubmit={onAddNewTemplateSubmit}
+              />
+            ) : (
+              <TemplateContentDisplay content={displayTemplateContent} />
+            )}
           </div>
         </div>
       </main>
