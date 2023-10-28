@@ -64,12 +64,10 @@ function App() {
 
   return (
     <div className="w-[700px] h-[400px] bg-white">
-      {/* Header */}
       <Header
         onChangeKeyword={onChangeKeyword}
         handleChangeStatusClick={handleChangeStatusClick}
       />
-      {/* Dashboard */}
       <main className="w-full">
         <div className="flex mx-6 py-3">
           <div className="w-[45%] h-[315px] overflow-scroll">
