@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { Button } from "./Button";
-import { Text } from "./Text";
+import { Button } from "./ui/Button";
+import { Text } from "./ui/Text";
 
 import { Status, Template, TemplateFormValues } from "@/types";
 
