@@ -1,18 +1,20 @@
 import { TemplateItem } from "./TemplateItem";
 import { TemplateItemList } from "./TemplateItemList";
 
-import { Template } from "@/types";
+import { Status, Template } from "@/types";
 
 type TemplatesProps = {
   templates: Template[];
   selectedId: string;
-  handleSelectTemplateClick: (id: string) => void;
+  setStatus: React.Dispatch<React.SetStateAction<Status>>;
+  setSectedId: (value: React.SetStateAction<string>) => void;
 };
 
 export const Templates = ({
   templates,
   selectedId,
-  handleSelectTemplateClick,
+  setStatus,
+  setSectedId,
 }: TemplatesProps) => {
   return (
     <div>
@@ -28,7 +30,8 @@ export const Templates = ({
           >
             <TemplateItem
               template={template}
-              handleSelectTemplateClick={handleSelectTemplateClick}
+              setStatus={setStatus}
+              setSectedId={setSectedId}
             />
           </li>
         ))}

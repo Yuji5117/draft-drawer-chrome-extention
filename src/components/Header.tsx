@@ -9,13 +9,20 @@ import { Status } from "@/types";
 
 type HeaderProps = {
   onChangeKeyword: (query: string) => void;
-  handleChangeStatusClick: (status: Status) => void;
+  setStatus: React.Dispatch<React.SetStateAction<Status>>;
+  setSectedId: (value: React.SetStateAction<string>) => void;
 };
 
 export const Header = ({
   onChangeKeyword,
-  handleChangeStatusClick,
+  setStatus,
+  setSectedId,
 }: HeaderProps) => {
+  const handleChangeStatusToAdd = (status: Status) => {
+    setSectedId("");
+    setStatus(status);
+  };
+
   return (
     <div className="bg-primary h-12 text-sm">
       <div className="h-full flex justify-between items-center mx-6">
@@ -33,7 +40,7 @@ export const Header = ({
           )}
         </SearchFormContainer>
         <div
-          onClick={() => handleChangeStatusClick("ADD")}
+          onClick={() => handleChangeStatusToAdd("ADD")}
           role="button"
           className="flex items-center space-x-1"
         >

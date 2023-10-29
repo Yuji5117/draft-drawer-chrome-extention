@@ -16,16 +16,6 @@ function App() {
     ? templates.find((template) => template.id === selectedId)?.content ?? ""
     : "テンプレートが選択されていません";
 
-  const handleSelectTemplateClick = (id: string) => {
-    setSectedId(id);
-    setStatus("READ");
-  };
-
-  const handleChangeStatusClick = (status: Status) => {
-    setStatus(status);
-    setSectedId("");
-  };
-
   const onAddNewTemplateSubmit: SubmitHandler<TemplateFormValues> = (
     data,
     event
@@ -45,7 +35,8 @@ function App() {
     <div className="w-[700px] h-[400px] bg-white">
       <Header
         onChangeKeyword={updateTemplateKeyword}
-        handleChangeStatusClick={handleChangeStatusClick}
+        setStatus={setStatus}
+        setSectedId={setSectedId}
       />
       <main className="w-full">
         <div className="flex mx-6 py-3">
@@ -53,7 +44,8 @@ function App() {
             <Templates
               templates={templates}
               selectedId={selectedId}
-              handleSelectTemplateClick={handleSelectTemplateClick}
+              setStatus={setStatus}
+              setSectedId={setSectedId}
             />
           </div>
 
