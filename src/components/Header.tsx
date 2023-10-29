@@ -8,7 +8,7 @@ import { Text } from "./ui/Text";
 import { Status } from "@/types";
 
 type HeaderProps = {
-  onChangeKeyword: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeKeyword: (query: string) => void;
   handleChangeStatusClick: (status: Status) => void;
 };
 
@@ -26,7 +26,7 @@ export const Header = ({
               <SearchInputField
                 registration={register("query", {
                   onChange: (event: React.ChangeEvent<HTMLInputElement>) =>
-                    onChangeKeyword(event),
+                    onChangeKeyword(event.target.value),
                 })}
               />
             </>

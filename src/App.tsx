@@ -1,25 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 
 import { Header } from "./components/Header";
 import { TemplateContent } from "./components/TemplateContent";
 import { Templates } from "./components/Templates";
-import { Status, Template, TemplateFormValues } from "./types";
-
-const initalTemplates: Template[] = [
-  { id: "1", title: "test", content: "testしました。" },
-  { id: "2", title: "hello", content: "今日もこんにちは" },
-  { id: "3", title: "why", content: "なぜですか？" },
-  { id: "4", title: "testtesttesttest", content: "テストいっぱいします。" },
-  { id: "5", title: "mean", content: "意味は何ですか？" },
-  { id: "6", title: "sorry", content: "すみません。" },
-];
+import { useTemplates } from "./hooks/useTemplates";
+import { Status, TemplateFormValues } from "./types";
 
 function App() {
-  const [templates, setTemplates] = useState(initalTemplates);
+  const { templates, addNewTemplate, updateTemplateKeyword } = useTemplates();
   const [selectedId, setSectedId] = useState("");
   const [status, setStatus] = useState<Status>("READ");
-  const [keyword, setKeyword] = useState("");
 
   const displayTemplateContent = selectedId
     ? templates.find((template) => template.id === selectedId)?.content ?? ""
@@ -35,16 +26,6 @@ function App() {
     setSectedId("");
   };
 
-  const onChangeKeyword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(event.target.value);
-  };
-
-  const filteredTemplates: Template[] = templates.filter((template) =>
-    template.title.includes(keyword)
-  );
-
-  const displayTemplates: Template[] = keyword ? filteredTemplates : templates;
-
   const onAddNewTemplateSubmit: SubmitHandler<TemplateFormValues> = (
     data,
     event
@@ -55,8 +36,7 @@ function App() {
 
     if (!data.title) return;
 
-    const id = (templates.length + 1).toString();
-    setTemplates([...templates, { id, title, content }]);
+    const { id } = addNewTemplate({ title, content });
     setStatus("READ");
     setSectedId(id);
   };
@@ -64,14 +44,14 @@ function App() {
   return (
     <div className="w-[700px] h-[400px] bg-white">
       <Header
-        onChangeKeyword={onChangeKeyword}
+        onChangeKeyword={updateTemplateKeyword}
         handleChangeStatusClick={handleChangeStatusClick}
       />
       <main className="w-full">
         <div className="flex mx-6 py-3">
           <div className="w-[45%] h-[315px] overflow-scroll">
             <Templates
-              templates={displayTemplates}
+              templates={templates}
               selectedId={selectedId}
               handleSelectTemplateClick={handleSelectTemplateClick}
             />
