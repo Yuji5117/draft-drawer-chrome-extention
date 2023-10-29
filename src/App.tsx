@@ -5,16 +5,17 @@ import { Header } from "./components/Header";
 import { TemplateContent } from "./components/TemplateContent";
 import { Templates } from "./components/Templates";
 import { useTemplates } from "./hooks/useTemplates";
-import { Status, TemplateFormValues } from "./types";
+import { Status, Template, TemplateFormValues } from "./types";
 
 function App() {
-  const { templates, addNewTemplate, updateTemplateKeyword } = useTemplates();
+  const { templates, addNewTemplate, deleteTemplate, updateTemplateKeyword } =
+    useTemplates();
   const [selectedId, setSectedId] = useState("");
   const [status, setStatus] = useState<Status>("READ");
 
-  const displayTemplateContent = selectedId
-    ? templates.find((template) => template.id === selectedId)?.content ?? ""
-    : "テンプレートが選択されていません";
+  const displayTemplate = templates.find(
+    (template) => template.id === selectedId
+  ) as Template;
 
   const onAddNewTemplateSubmit: SubmitHandler<TemplateFormValues> = (
     data,
@@ -52,8 +53,9 @@ function App() {
           <div className="w-[55%] h-[315px] border rounded-md">
             <TemplateContent
               status={status}
-              content={displayTemplateContent}
+              template={displayTemplate}
               onAddNewTemplateSubmit={onAddNewTemplateSubmit}
+              deleteTemplate={deleteTemplate}
             />
           </div>
         </div>

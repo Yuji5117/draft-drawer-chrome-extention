@@ -3,18 +3,20 @@ import { SubmitHandler } from "react-hook-form";
 import { TemplateContentDisplay } from "./TemplateContentDisplay";
 import { TemplateCreateContent } from "./TemplateCreateContent";
 
-import { Status, TemplateFormValues } from "@/types";
+import { Status, Template, TemplateFormValues } from "@/types";
 
 type TemplateContentProps = {
   status: Status;
-  content: string;
+  template: Template;
   onAddNewTemplateSubmit: SubmitHandler<TemplateFormValues>;
+  deleteTemplate: (id: string) => void;
 };
 
 export const TemplateContent = ({
   status,
-  content,
+  template,
   onAddNewTemplateSubmit,
+  deleteTemplate,
 }: TemplateContentProps) => {
   return (
     <div>
@@ -23,7 +25,10 @@ export const TemplateContent = ({
           onAddNewTemplateSubmit={onAddNewTemplateSubmit}
         />
       ) : (
-        <TemplateContentDisplay content={content} />
+        <TemplateContentDisplay
+          template={template}
+          deleteTemplate={deleteTemplate}
+        />
       )}
     </div>
   );

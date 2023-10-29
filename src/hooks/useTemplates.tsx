@@ -32,5 +32,10 @@ export const useTemplates = () => {
     return newTemplate;
   };
 
-  return { templates, addNewTemplate, updateTemplateKeyword };
+  const deleteTemplate = (id: string) => {
+    const deletedTemplates = state.filter((item) => item.id !== id);
+    setStates(deletedTemplates);
+  };
+
+  return { templates, addNewTemplate, deleteTemplate, updateTemplateKeyword };
 };
