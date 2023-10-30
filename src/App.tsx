@@ -8,8 +8,13 @@ import { useTemplates } from "./hooks/useTemplates";
 import { Status, Template, TemplateFormValues } from "./types";
 
 function App() {
-  const { templates, addNewTemplate, deleteTemplate, updateTemplateKeyword } =
-    useTemplates();
+  const {
+    templates,
+    addNewTemplate,
+    updateTemplate,
+    deleteTemplate,
+    updateTemplateKeyword,
+  } = useTemplates();
   const [selectedId, setSectedId] = useState("");
   const [status, setStatus] = useState<Status>("READ");
 
@@ -30,6 +35,14 @@ function App() {
     const { id } = addNewTemplate({ title, content });
     setStatus("READ");
     setSectedId(id);
+  };
+
+  const editTemplate = (id: string, data: TemplateFormValues) => {
+    const { title, content } = data;
+
+    updateTemplate(id, title, content);
+    setStatus("READ");
+    // setSectedId(id);
   };
 
   return (
@@ -53,8 +66,10 @@ function App() {
           <div className="w-[55%] h-[315px] border rounded-md">
             <TemplateContent
               status={status}
+              setStatus={setStatus}
               template={displayTemplate}
               onAddNewTemplateSubmit={onAddNewTemplateSubmit}
+              editTemplate={editTemplate}
               deleteTemplate={deleteTemplate}
             />
           </div>

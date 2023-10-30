@@ -1,15 +1,17 @@
 import { Button } from "./ui/Button";
 import { Text } from "./ui/Text";
 
-import { Template } from "@/types";
+import { Status, Template } from "@/types";
 
 type TemplateContentProps = {
   template: Template;
+  setStatus: React.Dispatch<React.SetStateAction<Status>>;
   deleteTemplate: (id: string) => void;
 };
 
 export const TemplateContentDisplay = ({
   template,
+  setStatus,
   deleteTemplate,
 }: TemplateContentProps) => {
   const onDeleteClick = (id: string) => {
@@ -19,7 +21,7 @@ export const TemplateContentDisplay = ({
   return (
     <div className="flex flex-col mx-5">
       <div className="h-16 flex items-center justify-end space-x-3">
-        <Button variant="primary" size="sm">
+        <Button onClick={() => setStatus("EDIT")} variant="primary" size="sm">
           Edit
         </Button>
         <Button
