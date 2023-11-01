@@ -1,21 +1,21 @@
 import { Button } from "./ui/Button";
 import { Text } from "./ui/Text";
 
+import { useDeleteTemplate } from "@/api/deleteTemplate";
 import { Status, Template } from "@/types";
 
 type TemplateContentProps = {
   template: Template;
   setStatus: React.Dispatch<React.SetStateAction<Status>>;
-  deleteTemplate: (id: string) => void;
 };
 
 export const TemplateContentDisplay = ({
   template,
   setStatus,
-  deleteTemplate,
 }: TemplateContentProps) => {
+  const deleteTemplateMutation = useDeleteTemplate();
   const onDeleteClick = (id: string) => {
-    deleteTemplate(id);
+    deleteTemplateMutation.mutate(id);
   };
 
   return (

@@ -12,7 +12,6 @@ type TemplateContentProps = {
   setStatus: React.Dispatch<React.SetStateAction<Status>>;
   onAddNewTemplateSubmit: SubmitHandler<TemplateFormValues>;
   editTemplate: (id: string, data: TemplateFormValues) => void;
-  deleteTemplate: (id: string) => void;
 };
 
 export const TemplateContent = ({
@@ -21,7 +20,6 @@ export const TemplateContent = ({
   template,
   onAddNewTemplateSubmit,
   editTemplate,
-  deleteTemplate,
 }: TemplateContentProps) => {
   const templateContentView = {
     ADD: (
@@ -30,13 +28,7 @@ export const TemplateContent = ({
     EDIT: (
       <TemplateUpdateContent template={template} editTemplate={editTemplate} />
     ),
-    READ: (
-      <TemplateContentDisplay
-        template={template}
-        setStatus={setStatus}
-        deleteTemplate={deleteTemplate}
-      />
-    ),
+    READ: <TemplateContentDisplay template={template} setStatus={setStatus} />,
   };
 
   return <div>{templateContentView[status]}</div>;
