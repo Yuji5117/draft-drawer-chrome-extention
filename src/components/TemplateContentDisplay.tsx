@@ -21,13 +21,19 @@ export const TemplateContentDisplay = ({
   return (
     <div className="flex flex-col mx-5">
       <div className="h-16 flex items-center justify-end space-x-3">
-        <Button onClick={() => setStatus("EDIT")} variant="primary" size="sm">
+        <Button
+          onClick={() => setStatus("EDIT")}
+          variant="primary"
+          size="sm"
+          isDisabled={!template}
+        >
           Edit
         </Button>
         <Button
           onClick={() => onDeleteClick(template.id)}
           variant="danger"
           size="sm"
+          isDisabled={!template}
         >
           Delete
         </Button>
