@@ -1,28 +1,36 @@
 import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 
+import { useCreateTemplate } from "./api/createTemplate";
+import { useTemplates } from "./api/getTemplates";
+import { useUpdateTemplate } from "./api/updateTemplate";
 import { Header } from "./components/Header";
 import { TemplateContent } from "./components/TemplateContent";
 import { Templates } from "./components/Templates";
-import { useTemplates } from "./hooks/useTemplates";
 import { Status, Template, TemplateFormValues } from "./types";
 
+const filterTemplates = (templates: Template[], keyword: string): Template[] =>
+  templates.filter((template) => template.title.includes(keyword));
+
 function App() {
-  const {
-    templates,
-    addNewTemplate,
-    updateTemplate,
-    deleteTemplate,
-    updateTemplateKeyword,
-  } = useTemplates();
+  const templatesQuery = useTemplates();
+  const createTemplateMutation = useCreateTemplate();
+  const updateTemplateMutation = useUpdateTemplate();
+  const [keyword, setKeyword] = useState("");
   const [selectedId, setSectedId] = useState("");
   const [status, setStatus] = useState<Status>("READ");
 
-  const displayTemplate = templates.find(
+  const templates = templatesQuery.data ?? [];
+
+  const filteredTemplates: Template[] = keyword
+    ? filterTemplates(templates, keyword)
+    : templates;
+
+  const displayTemplate = filteredTemplates.find(
     (template) => template.id === selectedId
   ) as Template;
 
-  const onAddNewTemplateSubmit: SubmitHandler<TemplateFormValues> = (
+  const onAddNewTemplateSubmit: SubmitHandler<TemplateFormValues> = async (
     data,
     event
   ) => {
@@ -32,23 +40,31 @@ function App() {
 
     if (!data.title) return;
 
-    const { id } = addNewTemplate({ title, content });
+    const res = await createTemplateMutation.mutateAsync({ title, content });
+
     setStatus("READ");
-    setSectedId(id);
+    setSectedId(res.id);
   };
 
-  const editTemplate = (id: string, data: TemplateFormValues) => {
-    const { title, content } = data;
-
-    updateTemplate(id, title, content);
+  const editTemplate = async (id: string, data: TemplateFormValues) => {
+    await updateTemplateMutation.mutateAsync({ templateId: id, data });
     setStatus("READ");
-    // setSectedId(id);
   };
+
+  if (templatesQuery.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (templatesQuery.isError) {
+    <div>Error occure</div>;
+  }
+
+  if (!templatesQuery.data) return null;
 
   return (
     <div className="w-[700px] h-[400px] bg-white">
       <Header
-        onChangeKeyword={updateTemplateKeyword}
+        onChangeKeyword={setKeyword}
         setStatus={setStatus}
         setSectedId={setSectedId}
       />
@@ -56,7 +72,7 @@ function App() {
         <div className="flex mx-6 py-3">
           <div className="w-[45%] h-[315px] overflow-scroll">
             <Templates
-              templates={templates}
+              templates={filteredTemplates}
               selectedId={selectedId}
               setStatus={setStatus}
               setSectedId={setSectedId}
@@ -70,7 +86,6 @@ function App() {
               template={displayTemplate}
               onAddNewTemplateSubmit={onAddNewTemplateSubmit}
               editTemplate={editTemplate}
-              deleteTemplate={deleteTemplate}
             />
           </div>
         </div>
