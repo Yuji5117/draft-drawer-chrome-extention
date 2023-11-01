@@ -32,7 +32,7 @@ export const TemplateItem = ({
       className="flex justify-between items-center px-2 h-full cursor-pointer"
     >
       <Text size="lg">{title}</Text>
-      <div onClick={copyToClipboard}>
+      <div onClick={copyToClipboard} className="hover:opacity-50">
         <HiOutlineClipboardCopy size={18} />
       </div>
     </div>
