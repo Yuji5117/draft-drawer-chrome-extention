@@ -2,8 +2,10 @@ import {
   addDoc,
   collection,
   CollectionReference,
+  doc,
   getDoc,
   getDocs,
+  updateDoc,
   WithFieldValue,
 } from "firebase/firestore";
 
@@ -34,4 +36,23 @@ export const createDoc = async <FieldValueType>(
   const docData = docSnapshot.data() as FieldValueType;
 
   return { id: newDocRef.id, ...docData };
+};
+
+export const updateDocFn = async <
+  FieldValueType extends { [key: string]: unknown }
+>(
+  collectionName: string,
+  documentId: string,
+  data: WithFieldValue<FieldValueType>
+) => {
+  const collectionRef = collection(
+    db,
+    collectionName
+  ) as CollectionReference<FieldValueType>;
+  const docRef = doc(collectionRef, documentId);
+  await updateDoc(docRef, data);
+  const docSnapshot = await getDoc(docRef);
+  const updatedData = docSnapshot.data() as Required<FieldValueType>;
+
+  return { id: docRef.id, ...updatedData };
 };
