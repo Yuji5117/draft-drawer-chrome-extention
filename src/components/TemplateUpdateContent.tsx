@@ -13,13 +13,11 @@ export const TemplateUpdateContent = ({
   template,
   editTemplate,
 }: TemplateUpdateContentProps) => {
-  console.log(template);
-  const { register, handleSubmit } = useForm<TemplateFormValues>();
+  const { register, watch, handleSubmit } = useForm<TemplateFormValues>();
+  const watchTitle = watch("title", template.title);
 
   const onUpdateSubmit: SubmitHandler<TemplateFormValues> = (data, event) => {
     event?.preventDefault();
-    console.log({ data });
-
     if (!data.title) return;
 
     editTemplate(template.id, data);
@@ -36,7 +34,7 @@ export const TemplateUpdateContent = ({
           type="text"
           className="border w-full"
         />
-        <Button variant="primary" size="sm">
+        <Button variant="primary" size="sm" isDisabled={!watchTitle}>
           Update
         </Button>
       </div>

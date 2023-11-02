@@ -11,7 +11,9 @@ type TemplateContentProps = {
 export const TemplateCreateContent = ({
   onAddNewTemplateSubmit,
 }: TemplateContentProps) => {
-  const { register, handleSubmit } = useForm<TemplateFormValues>();
+  const { register, watch, handleSubmit } = useForm<TemplateFormValues>();
+  const watchTitle = watch("title");
+
   return (
     <form
       onSubmit={handleSubmit(onAddNewTemplateSubmit)}
@@ -19,7 +21,7 @@ export const TemplateCreateContent = ({
     >
       <div className="h-16 flex items-center justify-end space-x-3">
         <input {...register("title")} type="text" className="border w-full" />
-        <Button variant="primary" size="sm">
+        <Button variant="primary" size="sm" isDisabled={!watchTitle}>
           Add
         </Button>
       </div>
