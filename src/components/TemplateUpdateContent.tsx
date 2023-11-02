@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { Button } from "./ui/Button";
+import { InputField } from "./ui/InputField";
 
 import { Template, TemplateFormValues } from "@/types";
 
@@ -28,11 +29,9 @@ export const TemplateUpdateContent = ({
       className="flex flex-col mx-5"
     >
       <div className="h-16 flex items-center justify-end space-x-3">
-        <input
+        <InputField
           defaultValue={template.title}
-          {...register("title")}
-          type="text"
-          className="border w-full"
+          registration={{ ...register("title") }}
         />
         <Button variant="primary" size="sm" isDisabled={!watchTitle}>
           Update
