@@ -40,7 +40,7 @@ export const TemplateContentDisplay = ({
       </div>
 
       <div className="w-full h-60 overflow-y-scroll">
-        <Text size="sm" className="break-words">
+        <Text size="sm" className="break-words whitespace-pre-wrap">
           {template?.content ?? "テンプレートが選択されていません"}
         </Text>
       </div>
