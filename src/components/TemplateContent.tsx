@@ -22,13 +22,13 @@ export const TemplateContent = ({
   editTemplate,
 }: TemplateContentProps) => {
   const templateContentView = {
+    READ: <TemplateContentDisplay template={template} setStatus={setStatus} />,
     ADD: (
       <TemplateCreateContent onAddNewTemplateSubmit={onAddNewTemplateSubmit} />
     ),
     EDIT: (
       <TemplateUpdateContent template={template} editTemplate={editTemplate} />
     ),
-    READ: <TemplateContentDisplay template={template} setStatus={setStatus} />,
   };
 
   return <div>{templateContentView[status]}</div>;
