@@ -21,15 +21,26 @@ export const TemplateContent = ({
   onAddNewTemplateSubmit,
   editTemplate,
 }: TemplateContentProps) => {
-  const templateContentView = {
-    READ: <TemplateContentDisplay template={template} setStatus={setStatus} />,
-    ADD: (
-      <TemplateCreateContent onAddNewTemplateSubmit={onAddNewTemplateSubmit} />
-    ),
-    EDIT: (
-      <TemplateUpdateContent template={template} editTemplate={editTemplate} />
-    ),
+  const renderTemplateContent = () => {
+    if (status === "ADD") {
+      return (
+        <TemplateCreateContent
+          onAddNewTemplateSubmit={onAddNewTemplateSubmit}
+        />
+      );
+    }
+
+    if (status === "EDIT") {
+      return (
+        <TemplateUpdateContent
+          template={template}
+          editTemplate={editTemplate}
+        />
+      );
+    }
+
+    return <TemplateContentDisplay template={template} setStatus={setStatus} />;
   };
 
-  return <div>{templateContentView[status]}</div>;
+  return <div>{renderTemplateContent()}</div>;
 };
