@@ -4,6 +4,7 @@ import { SubmitHandler } from "react-hook-form";
 import { useCreateTemplate } from "./api/createTemplate";
 import { useTemplates } from "./api/getTemplates";
 import { useUpdateTemplate } from "./api/updateTemplate";
+import { Signin } from "./components/auth/Signin";
 import { Header } from "./components/Header";
 import { TemplateContent } from "./components/templates/TemplateContent";
 import { Templates } from "./components/templates/Templates";
@@ -63,6 +64,7 @@ function App() {
 
   return (
     <div className="w-[700px] h-[400px] bg-white">
+      <Signin />
       <Header
         onChangeKeyword={setKeyword}
         setStatus={setStatus}
