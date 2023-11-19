@@ -5,8 +5,8 @@ import { useCreateTemplate } from "./api/createTemplate";
 import { useTemplates } from "./api/getTemplates";
 import { useUpdateTemplate } from "./api/updateTemplate";
 import { Header } from "./components/Header";
-import { TemplateContent } from "./components/TemplateContent";
-import { Templates } from "./components/Templates";
+import { TemplateContent } from "./components/templates/TemplateContent";
+import { Templates } from "./components/templates/Templates";
 import { Status, Template, TemplateFormValues } from "./types";
 
 const filterTemplates = (templates: Template[], keyword: string): Template[] =>

@@ -1,6 +1,6 @@
 import { HiOutlineClipboardCopy } from "react-icons/hi";
 
-import { Text } from "./ui/Text";
+import { Text } from "../ui/Text";
 
 import { Status, Template } from "@/types";
 
