@@ -1,13 +1,25 @@
+import { GoogleAuthProvider, signInWithCredential, User } from "firebase/auth";
+
+import { auth } from "@/config/firebase";
+
 type ChromeListenerMessageType = {
   type: "sign-in";
 };
 
-const signIn = async (sendResponse: (response: string) => void) => {
-  const token = await chrome.identity.getAuthToken({
+const signIn = async (
+  sendResponse: (response: { user: User; token: string }) => void
+) => {
+  const { token } = await chrome.identity.getAuthToken({
     interactive: true,
   });
-  console.log(token);
-  sendResponse("you are signed in");
+
+  const credential = GoogleAuthProvider.credential(null, token);
+
+  const userCredential = await signInWithCredential(auth, credential);
+
+  const user = userCredential.user;
+  const idToken = await user.getIdToken(true);
+  sendResponse({ user: user, token: idToken });
 };
 
 chrome.runtime.onMessage.addListener(
