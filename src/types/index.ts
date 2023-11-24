@@ -2,6 +2,10 @@ export type BaseEntity = {
   id: string;
 };
 
+export type User = BaseEntity & {
+  email: string;
+};
+
 export type Template = BaseEntity & {
   title: string;
   content: string;

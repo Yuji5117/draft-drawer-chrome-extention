@@ -12,9 +12,14 @@ import {
 
 import { db } from "@/config/firebase";
 
-export const getAllDocs = async <DocDataType>(collectionName: string) => {
+export const getAllDocs = async <DocDataType>(
+  userId: string,
+  collectionName: string
+) => {
   const shopsColRef = collection(
     db,
+    "users",
+    userId,
     collectionName
   ) as CollectionReference<DocDataType>;
   const querySnapshot = await getDocs(shopsColRef);
