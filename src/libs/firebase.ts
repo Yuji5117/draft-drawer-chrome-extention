@@ -32,8 +32,13 @@ export const createDoc = async <FieldValueType>(
   collectionName: string,
   data: WithFieldValue<FieldValueType>
 ) => {
+  const userId = auth.currentUser?.uid;
+  if (userId === undefined) throw Error("認証情報がありません。");
+
   const collectionRef = collection(
     db,
+    "users",
+    userId,
     collectionName
   ) as CollectionReference<FieldValueType>;
   const newDocRef = await addDoc(collectionRef, data);
@@ -50,8 +55,13 @@ export const updateDocFn = async <
   documentId: string,
   data: WithFieldValue<FieldValueType>
 ) => {
+  const userId = auth.currentUser?.uid;
+  if (userId === undefined) throw Error("認証情報がありません。");
+
   const collectionRef = collection(
     db,
+    "users",
+    userId,
     collectionName
   ) as CollectionReference<FieldValueType>;
   const docRef = doc(collectionRef, documentId);
@@ -66,8 +76,13 @@ export const deleteDocFn = async <FieldValueType>(
   collectionName: string,
   documentId: string
 ) => {
+  const userId = auth.currentUser?.uid;
+  if (userId === undefined) throw Error("認証情報がありません。");
+
   const collectionRef = collection(
     db,
+    "users",
+    userId,
     collectionName
   ) as CollectionReference<FieldValueType>;
   const docRef = doc(collectionRef, documentId);
