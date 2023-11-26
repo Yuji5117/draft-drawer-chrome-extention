@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 
 import { Header } from "./Header";
@@ -21,15 +21,18 @@ function Main() {
   const [selectedId, setSectedId] = useState("");
   const [status, setStatus] = useState<Status>("READ");
 
-  const templates = templatesQuery.data ?? [];
+  const filteredTemplates: Template[] = useMemo(() => {
+    const templates = templatesQuery.data ?? [];
+    return keyword ? filterTemplates(templates, keyword) : templates;
+  }, [templatesQuery, keyword]);
 
-  const filteredTemplates: Template[] = keyword
-    ? filterTemplates(templates, keyword)
-    : templates;
-
-  const displayTemplate = filteredTemplates.find(
-    (template) => template.id === selectedId
-  ) as Template;
+  const displayTemplate = useMemo(
+    () =>
+      filteredTemplates.find(
+        (template) => template.id === selectedId
+      ) as Template,
+    [filteredTemplates, selectedId]
+  );
 
   const onAddNewTemplateSubmit: SubmitHandler<TemplateFormValues> = async (
     data,
