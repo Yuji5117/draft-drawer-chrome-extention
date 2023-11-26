@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import { Signin } from "./components/auth/Signin";
 import Main from "./components/Main";
-import { AuthContext } from "./store/context/auth";
+import { AuthContext } from "./context/auth";
 
 function App() {
   const user = useContext(AuthContext);
