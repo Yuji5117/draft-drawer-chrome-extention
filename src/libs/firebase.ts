@@ -10,12 +10,11 @@ import {
   WithFieldValue,
 } from "firebase/firestore";
 
-import { db } from "@/config/firebase";
+import { auth, db } from "@/config/firebase";
 
-export const getAllDocs = async <DocDataType>(
-  userId: string,
-  collectionName: string
-) => {
+export const getAllDocs = async <DocDataType>(collectionName: string) => {
+  const userId = auth.currentUser?.uid;
+  if (userId === undefined) throw Error("認証情報がありません。");
   const shopsColRef = collection(
     db,
     "users",
