@@ -1,27 +1,33 @@
-# React + TypeScript + Vite
+# Draft Drawer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Draft Drawer は、Chrome 拡張機能として開発された文書やメッセージのテンプレートを管理し、必要な時に素早くアクセスできるテンプレート管理ツールです。ブラウザ内で直接操作できるため、Web 上でのコミュニケーションをよりスムーズかつ効率的に行えます。
 
-Currently, two official plugins are available:
+## 特徴
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- テンプレートを一箇所に保存して管理できる
+- 必要なテンプレートを瞬時に検索してコピー＆ペースト
 
-## Expanding the ESLint configuration
+## 技術スタック
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Draft Drawer は、以下のように分類された技術スタックを使用しています：
 
-- Configure the top-level `parserOptions` property like this:
+### フロントエンド開発
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+- **React**: コンポーネントベースの UI 構築を可能にする、宣言的な JavaScript ライブラリ。
+- **Typescript**: JavaScript に型を加えることで、エラーを減らし、開発プロセスを改善するスーパーセット。
+- **Tailwind CSS**: 効率的なスタイリングを実現するためのユーティリティファーストの CSS フレームワーク。
+- **React Icons**: 多種多様なアイコンセットを提供し、React コンポーネントとして簡単に統合可能。
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### 状態管理とデータフェッチング
+
+- **React Query**: バックエンドからのデータフェッチングとキャッシュ戦略を簡単に管理。
+- **React Hook Form**: フォーム状態管理を簡素化し、パフォーマンスの向上を図るためのフック。
+
+### バックエンドと認証
+
+- **Firebase Firestore**: リアルタイムのデータ同期を提供する NoSQL クラウドデータベース。
+- **Firebase Authentication**: セキュアなユーザー認証とアイデンティティ管理を実現するためのサービス。
+
+### コード品質と整合性
+
+- **ESlint**: コードの問題を特定し、統一されたコーディングスタイルを保つための静的コード解析ツール。
