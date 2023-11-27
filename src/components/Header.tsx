@@ -5,6 +5,7 @@ import { SearchIcon } from "./SearchForm/SearchIcon";
 import { SearchInputField } from "./SearchForm/SearchInputField";
 import { Text } from "./ui/Text";
 
+import { signout } from "@/libs/firebase-auth";
 import { Status } from "@/types";
 
 type HeaderProps = {
@@ -23,6 +24,13 @@ export const Header = ({
     setStatus(status);
   };
 
+  const onSignoutClick = () => {
+    const userConfirmed = window.confirm("Are you sure you want to signout?");
+    if (userConfirmed) {
+      signout();
+    }
+  };
+
   return (
     <div className="bg-primary h-12 text-sm">
       <div className="h-full flex justify-between items-center mx-6">
@@ -39,15 +47,22 @@ export const Header = ({
             </>
           )}
         </SearchFormContainer>
-        <div
-          onClick={() => handleChangeStatusToAdd("ADD")}
-          role="button"
-          className="flex items-center space-x-1"
-        >
-          <IoIosAddCircleOutline size={15} color="white" />
-          <Text size="sm" variant="white">
-            New Template
-          </Text>
+        <div className="flex gap-x-4">
+          <div
+            onClick={() => handleChangeStatusToAdd("ADD")}
+            role="button"
+            className="flex items-center space-x-1"
+          >
+            <IoIosAddCircleOutline size={15} color="white" />
+            <Text size="sm" variant="white">
+              New Template
+            </Text>
+          </div>
+          <div role="button" onClick={onSignoutClick}>
+            <Text size="sm" variant="white">
+              Signout
+            </Text>
+          </div>
         </div>
       </div>
     </div>
