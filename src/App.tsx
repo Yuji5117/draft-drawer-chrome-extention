@@ -9,7 +9,12 @@ function App() {
 
   if (user === undefined) return <div>User Loading...</div>;
 
-  if (user === null) return <Signin />;
+  if (user === null)
+    return (
+      <div className="w-96 h-72 flex justify-center items-center">
+        <Signin />
+      </div>
+    );
 
   return <Main />;
 }
