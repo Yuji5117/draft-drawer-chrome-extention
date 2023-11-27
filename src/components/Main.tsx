@@ -63,8 +63,6 @@ function Main() {
     <div>Error occure</div>;
   }
 
-  if (!templatesQuery.data) return null;
-
   return (
     <div className="w-[700px] h-[400px] bg-white">
       <Header
