@@ -1,4 +1,3 @@
-import { signOut } from "firebase/auth";
 import { useMemo, useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 
@@ -9,7 +8,6 @@ import { Templates } from "./templates/Templates";
 import { useCreateTemplate } from "@/api/createTemplate";
 import { useTemplates } from "@/api/getTemplates";
 import { useUpdateTemplate } from "@/api/updateTemplate";
-import { auth } from "@/config/firebase";
 import { Status, Template, TemplateFormValues } from "@/types";
 
 const filterTemplates = (templates: Template[], keyword: string): Template[] =>
@@ -69,7 +67,6 @@ function Main() {
 
   return (
     <div className="w-[700px] h-[400px] bg-white">
-      <div onClick={() => signOut(auth)}>アウト</div>
       <Header
         onChangeKeyword={setKeyword}
         setStatus={setStatus}
