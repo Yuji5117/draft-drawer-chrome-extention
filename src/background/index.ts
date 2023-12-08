@@ -3,6 +3,7 @@ import { GoogleAuthProvider, signInWithCredential, User } from "firebase/auth";
 import { getTemplates } from "./../api/getTemplates";
 
 import { auth } from "@/config/firebase";
+import { Template } from "@/types";
 
 type ChromeListenerMessageType = {
   type: "sign-in" | "get-templates";
@@ -32,19 +33,28 @@ const signIn = async (
   }
 };
 
+const showTemplates = async (
+  sendResponce: (response: {
+    templates: Template[];
+    status: "SUCCESS" | "ERROR";
+  }) => void
+) => {
+  try {
+    const templates = await getTemplates();
+    sendResponce({ templates: templates, status: "SUCCESS" });
+  } catch (e) {
+    throw Error("エラーです。");
+  }
+};
+
 chrome.runtime.onMessage.addListener(
-  async (message: ChromeListenerMessageType, _, sendResponce) => {
+  (message: ChromeListenerMessageType, _, sendResponce) => {
     switch (message.type) {
       case "sign-in":
         signIn(sendResponce);
         return true;
       case "get-templates":
-        try {
-          const templates = await getTemplates();
-          sendResponce({ tempaltes: templates, status: "SUCCESS" });
-        } catch (e) {
-          throw Error("エラーです。");
-        }
+        showTemplates(sendResponce);
         return true;
       default:
         sendResponce({

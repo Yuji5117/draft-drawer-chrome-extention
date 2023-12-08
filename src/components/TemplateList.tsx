@@ -9,7 +9,7 @@ export const TemplateList = () => {
     const getTemplates = async () => {
       await new Promise<void>((resolve) => {
         chrome.runtime.sendMessage({ type: "get-templates" }, (response) => {
-          setTemplates(response.tempaltes as Template[]);
+          setTemplates(response.templates as Template[]);
           resolve();
         });
       });
