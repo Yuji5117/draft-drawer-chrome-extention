@@ -1,6 +1,26 @@
 {
   "manifest_version": 3,
-  "name": "CRXJS React Vite Example",
+  "name": "Draft Drawer",
   "version": "1.0.0",
-  "action": { "default_popup": "index.html" }
+  "background": {
+    "service_worker": "./src/background/index.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/index.tsx"]
+    }
+  ],
+  "action": { "default_popup": "index.html" },
+  "permissions": ["identity", "tabs"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' ; object-src 'self'",
+    "sandbox": "sandbox allow-scripts; script-src 'self' https://apis.google.com https://www.gstatic.com https://www.googleapis.com https://securetoken.googleapis.com; object-src 'self'"
+  },
+  "oauth2": {
+    "client_id": "559846429571-9rg0ahjt1bk437drci1o89i45btdmb6h.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/userinfo.email"]
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkCly5X9GWq8g8gspI6ujBjOmwbnUZAes54zotxSKgBfPNSCBccDV4jJD/H93YBwkyBjc48kgyW1o3hKdHRsyeFLrdeKUX90ZRgf0+kdQZ9ksaWkHJ+W3KmvJL+oxRMy5MBhwiR5BsotWLPOiRkQvJbLVyA2eFMR1BpN3hQ73rS/IV4R7mbEeankMRMGayJvsYTfYhtaAFeLaPkN48SItI/6k5O52LyxNRmy6oDk5dy8EPuekq6evHlVs0bGt0rnKCOXkPgPAYExt2RMMhWCYJ9Ca4ND9NmuWJHR/nhEBS6Hn2WBkq95wXQRyNWKZ++svDxJWepZ9iYWg+jh9zPa8MwIDAQAB"
 }
