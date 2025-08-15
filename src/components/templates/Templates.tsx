@@ -1,5 +1,4 @@
 import { TemplateItem } from "./TemplateItem";
-import { TemplateItemList } from "./TemplateItemList";
 
 import { Status, Template } from "@/types";
 
@@ -18,12 +17,12 @@ export const Templates = ({
 }: TemplatesProps) => {
   return (
     <div>
-      <TemplateItemList>
+      <ul className="flex flex-col space-y-1.5">
         {templates.map((template) => (
           <li
-            className={`h-10 ${
+            className={`py-1 rounded-lg ${
               template.id === selectedId
-                ? "opacity-60 bg-green-200 rounded-lg"
+                ? "opacity-60 bg-green-200"
                 : ""
             }`}
             key={template.id}
@@ -35,7 +34,7 @@ export const Templates = ({
             />
           </li>
         ))}
-      </TemplateItemList>
+      </ul>
     </div>
   );
 };
