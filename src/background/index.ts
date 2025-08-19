@@ -12,7 +12,6 @@ type ChromeListenerMessageType = {
 const signIn = async (
   sendResponse: (response: {
     user: User;
-    token: string;
     status: "SUCCESS" | "ERROR";
   }) => void
 ) => {
@@ -26,8 +25,8 @@ const signIn = async (
     const userCredential = await signInWithCredential(auth, credential);
 
     const user = userCredential.user;
-    const idToken = await user.getIdToken(true);
-    sendResponse({ user: user, token: idToken, status: "SUCCESS" });
+
+    sendResponse({ user: user, status: "SUCCESS" });
   } catch (e) {
     throw Error("エラーです。");
   }
