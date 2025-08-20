@@ -3,7 +3,7 @@ import { GoogleSigninButton } from "./GoogleSigninButton";
 export const Signin = () => {
   const signIn = async () => {
     await new Promise<void>((resolve) => {
-      chrome.runtime.sendMessage({ type: "sign-in" }, (response) => {
+      chrome.runtime.sendMessage({ type: "sign-in" }, () => {
         resolve();
       });
     });
