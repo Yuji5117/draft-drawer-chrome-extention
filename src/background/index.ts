@@ -1,20 +1,16 @@
-import { GoogleAuthProvider, signInWithCredential, User } from "firebase/auth";
+import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 
 import { getTemplates } from "./../api/getTemplates";
 
 import { auth } from "@/config/firebase";
-import { Template } from "@/types";
+import {
+  User,
+  AuthResponse,
+  TemplatesResponse,
+  ChromeMessage,
+} from "@/types";
 
-type ChromeListenerMessageType = {
-  type: "sign-in" | "get-templates";
-};
-
-const signIn = async (
-  sendResponse: (response: {
-    user: User;
-    status: "SUCCESS" | "ERROR";
-  }) => void
-) => {
+const signIn = async (sendResponse: (response: AuthResponse) => void) => {
   try {
     const { token } = await chrome.identity.getAuthToken({
       interactive: true,
@@ -24,30 +20,50 @@ const signIn = async (
 
     const userCredential = await signInWithCredential(auth, credential);
 
-    const user = userCredential.user;
+    const firebaseUser = userCredential.user;
+    const user: User = {
+      id: firebaseUser.uid,
+      email: firebaseUser.email as string,
+    };
 
     sendResponse({ user: user, status: "SUCCESS" });
   } catch (e) {
-    throw Error("エラーです。");
+    console.error("Sign-in error:", e);
+
+    let errorMessage = "認証中にエラーが発生しました。";
+
+    if (e instanceof Error) {
+      if (e.message.includes("User did not approve")) {
+        errorMessage = "認証がキャンセルされました。";
+      } else if (e.message.includes("network")) {
+        errorMessage =
+          "ネットワークエラーが発生しました。インターネット接続を確認してください。";
+      } else if (e.message.includes("invalid-credential")) {
+        errorMessage = "認証情報が無効です。再度お試しください。";
+      }
+    }
+
+    sendResponse({ status: "ERROR", error: errorMessage });
   }
 };
 
 const showTemplates = async (
-  sendResponse: (response: {
-    templates: Template[];
-    status: "SUCCESS" | "ERROR";
-  }) => void
+  sendResponse: (response: TemplatesResponse) => void
 ) => {
   try {
     const templates = await getTemplates();
     sendResponse({ templates: templates, status: "SUCCESS" });
   } catch (e) {
-    throw Error("エラーです。");
+    console.error("Templates fetch error:", e);
+    sendResponse({
+      status: "ERROR",
+      error: "テンプレートの取得に失敗しました。",
+    });
   }
 };
 
 chrome.runtime.onMessage.addListener(
-  (message: ChromeListenerMessageType, _, sendResponse) => {
+  (message: ChromeMessage, _, sendResponse) => {
     switch (message.type) {
       case "sign-in":
         signIn(sendResponse);
