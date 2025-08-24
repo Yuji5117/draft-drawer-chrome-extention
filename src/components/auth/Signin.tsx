@@ -1,12 +1,38 @@
+import { useState } from "react";
+
 import { GoogleSigninButton } from "./GoogleSigninButton";
 
+import { AuthResponse } from "@/types";
+
 export const Signin = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const signIn = async () => {
-    await new Promise<void>((resolve) => {
-      chrome.runtime.sendMessage({ type: "sign-in" }, () => {
-        resolve();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await new Promise<AuthResponse>((resolve) => {
+        chrome.runtime.sendMessage(
+          { type: "sign-in" },
+          (response: AuthResponse) => {
+            resolve(response);
+          }
+        );
       });
-    });
+
+      if (response.status === "SUCCESS") {
+        console.log("認証成功:", response.user.email);
+      } else {
+        setError(response.error);
+      }
+    } catch (error) {
+      console.error("認証エラー:", error);
+      setError("認証中にエラーが発生しました。");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -19,6 +45,8 @@ export const Signin = () => {
         </p>
       </div>
       <GoogleSigninButton onClick={signIn} />
+      {isLoading && <p className="text-xs text-blue-600">認証中...</p>}
+      {error && <p className="text-xs text-red-600">{error}</p>}
       <p className="text-xs text-gray-600">
         利用規約、プライバシーポリシーに同意したうえでログインしてください。
       </p>
