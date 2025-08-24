@@ -24,13 +24,14 @@ export const Signin = () => {
 
       if (response.status === "SUCCESS") {
         console.log("認証成功:", response.user.email);
+        // memo:成功時はsetIsLoading(false)不要 - コンポーネントがアンマウントされるため、エラー時のみボタンを再活性化
       } else {
         setError(response.error);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("認証エラー:", error);
       setError("認証中にエラーが発生しました。");
-    } finally {
       setIsLoading(false);
     }
   };
