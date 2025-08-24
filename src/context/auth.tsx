@@ -16,11 +16,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const userRef = doc(db, `users/${firebaseUser.uid}`);
-        const userSnapShot = await getDoc(userRef);
+        const userSnapshot = await getDoc(userRef);
 
-        if (userSnapShot.exists()) {
-          const userFromDoc = (await getDoc(userRef)).data() as User;
-          setUser({ id: userFromDoc.id, email: userFromDoc.email });
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.data() as User;
+          setUser({ id: userData.id, email: userData.email });
         } else {
           const appUser = {
             id: firebaseUser.uid,
