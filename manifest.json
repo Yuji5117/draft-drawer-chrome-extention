@@ -7,6 +7,15 @@
     "type": "module"
   },
   "action": { "default_popup": "index.html" },
+  "commands": {
+    "open-popup": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Open Draft Drawer popup"
+    }
+  },
   "permissions": ["identity", "tabs"],
   "content_security_policy": {
     "extension_pages": "script-src 'self' ; object-src 'self'",
