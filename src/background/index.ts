@@ -3,12 +3,7 @@ import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { getTemplates } from "./../api/getTemplates";
 
 import { auth } from "@/config/firebase";
-import {
-  User,
-  AuthResponse,
-  TemplatesResponse,
-  ChromeMessage,
-} from "@/types";
+import { User, AuthResponse, TemplatesResponse, ChromeMessage } from "@/types";
 
 const signIn = async (sendResponse: (response: AuthResponse) => void) => {
   try {
@@ -61,6 +56,16 @@ const showTemplates = async (
     });
   }
 };
+
+chrome.commands.onCommand.addListener(async (command) => {
+  if (command === "open-popup") {
+    try {
+      await chrome.action.openPopup();
+    } catch (error) {
+      console.error("Failed to open popup via keyboard shortcut:", error);
+    }
+  }
+});
 
 chrome.runtime.onMessage.addListener(
   (message: ChromeMessage, _, sendResponse) => {
