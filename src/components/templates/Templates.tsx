@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
 import { TemplateItem } from "./TemplateItem";
 
 import { Status, Template } from "@/types";
+import { useRovingTabIndex } from "@/hooks/useRovingTabIndex";
 
 type TemplatesProps = {
   templates: Template[];
@@ -16,40 +16,13 @@ export const Templates = ({
   setStatus,
   setSectedId,
 }: TemplatesProps) => {
-  const copyButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [active, setActive] = useState<number>(0);
-
-  useEffect(() => {
-    const el = copyButtonRefs.current[active];
-    if (el && document.activeElement !== el) {
-      el.focus({ preventScroll: true });
-    }
-  }, [active]);
-
-  const handleUlOnKeyDown = (e: React.KeyboardEvent<HTMLUListElement>) => {
-    switch (e.key) {
-      case "ArrowDown":
-      case "ArrowRight":
-        setActive((prev) => Math.min(prev + 1, templates.length - 1));
-        break;
-      case "ArrowUp":
-      case "ArrowLeft":
-        setActive((prev) => Math.max(prev - 1, 0));
-        break;
-      case "Home":
-        setActive(0);
-        break;
-      case "End":
-        setActive(templates.length - 1);
-        break;
-      default:
-        break;
-    }
-  };
+  const { active, setActive, itemRefs, handleKeyDown } = useRovingTabIndex({
+    itemCount: templates.length,
+  });
 
   return (
     <div>
-      <ul className="flex flex-col space-y-1.5" onKeyDown={handleUlOnKeyDown}>
+      <ul className="flex flex-col space-y-1.5" onKeyDown={handleKeyDown}>
         {templates.map((template, index) => (
           <li
             className={`py-1 rounded-lg ${
@@ -61,7 +34,7 @@ export const Templates = ({
               template={template}
               setStatus={setStatus}
               setSectedId={setSectedId}
-              copyButtonRef={(el) => (copyButtonRefs.current[index] = el)}
+              copyButtonRef={(el) => (itemRefs.current[index] = el)}
               onCopyButtonFocus={() => setActive(index)}
               copyTabIndex={index === active ? 0 : -1}
             />
