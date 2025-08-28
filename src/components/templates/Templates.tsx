@@ -17,13 +17,11 @@ export const Templates = ({
 }: TemplatesProps) => {
   return (
     <div>
-      <ul className="flex flex-col space-y-1.5">
+      <ul className="flex flex-col space-y-1.5" tabIndex={0}>
         {templates.map((template) => (
           <li
             className={`py-1 rounded-lg ${
-              template.id === selectedId
-                ? "opacity-60 bg-green-200"
-                : ""
+              template.id === selectedId ? "opacity-60 bg-green-200" : ""
             }`}
             key={template.id}
           >
