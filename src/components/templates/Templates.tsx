@@ -24,7 +24,10 @@ export const Templates = ({
   };
 
   useEffect(() => {
-    copyButtonRefs.current[active]?.focus();
+    const el = copyButtonRefs.current[active];
+    if (el && document.activeElement !== el) {
+      el.focus({ preventScroll: true });
+    }
   }, [active]);
 
   const handleUlOnKeyDown = (e: React.KeyboardEvent<HTMLUListElement>) => {
