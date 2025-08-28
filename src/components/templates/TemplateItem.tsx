@@ -10,6 +10,7 @@ type TemplateItemProps = {
   setSectedId: (value: React.SetStateAction<string>) => void;
   copyButtonRef?: (el: HTMLButtonElement | null) => void;
   onCopyButtonFocus: () => void;
+  copyTabIndex: number;
 };
 
 export const TemplateItem = ({
@@ -18,6 +19,7 @@ export const TemplateItem = ({
   setSectedId,
   copyButtonRef,
   onCopyButtonFocus,
+  copyTabIndex,
 }: TemplateItemProps) => {
   const { id, title, content } = template;
 
@@ -43,6 +45,7 @@ export const TemplateItem = ({
           copyToClipboard();
         }}
         onFocus={onCopyButtonFocus}
+        tabIndex={copyTabIndex}
         className="hover:opacity-50"
       >
         <HiOutlineClipboardCopy size={18} />
