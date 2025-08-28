@@ -19,10 +19,6 @@ export const Templates = ({
   const copyButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [active, setActive] = useState<number>(0);
 
-  const handleUlOnFocus = () => {
-    copyButtonRefs.current[active]?.focus();
-  };
-
   useEffect(() => {
     const el = copyButtonRefs.current[active];
     if (el && document.activeElement !== el) {
@@ -53,12 +49,7 @@ export const Templates = ({
 
   return (
     <div>
-      <ul
-        className="flex flex-col space-y-1.5"
-        tabIndex={0}
-        onFocus={handleUlOnFocus}
-        onKeyDown={handleUlOnKeyDown}
-      >
+      <ul className="flex flex-col space-y-1.5" onKeyDown={handleUlOnKeyDown}>
         {templates.map((template, index) => (
           <li
             className={`py-1 rounded-lg ${
