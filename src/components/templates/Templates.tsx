@@ -42,6 +42,7 @@ export const Templates = ({
               setStatus={setStatus}
               setSectedId={setSectedId}
               copyButtonRef={(el) => (copyButtonRefs.current[index] = el)}
+              onCopyButtonFocus={() => setActive(index)}
             />
           </li>
         ))}

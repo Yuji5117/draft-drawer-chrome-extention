@@ -9,6 +9,7 @@ type TemplateItemProps = {
   setStatus: React.Dispatch<React.SetStateAction<Status>>;
   setSectedId: (value: React.SetStateAction<string>) => void;
   copyButtonRef?: (el: HTMLButtonElement | null) => void;
+  onCopyButtonFocus: () => void;
 };
 
 export const TemplateItem = ({
@@ -16,6 +17,7 @@ export const TemplateItem = ({
   setStatus,
   setSectedId,
   copyButtonRef,
+  onCopyButtonFocus,
 }: TemplateItemProps) => {
   const { id, title, content } = template;
 
@@ -40,6 +42,7 @@ export const TemplateItem = ({
           e.stopPropagation();
           copyToClipboard();
         }}
+        onFocus={onCopyButtonFocus}
         className="hover:opacity-50"
       >
         <HiOutlineClipboardCopy size={18} />
