@@ -8,12 +8,18 @@ type TemplateItemProps = {
   template: Template;
   setStatus: React.Dispatch<React.SetStateAction<Status>>;
   setSectedId: (value: React.SetStateAction<string>) => void;
+  copyButtonRef?: (el: HTMLButtonElement | null) => void;
+  onCopyButtonFocus: () => void;
+  copyTabIndex: number;
 };
 
 export const TemplateItem = ({
   template,
   setStatus,
   setSectedId,
+  copyButtonRef,
+  onCopyButtonFocus,
+  copyTabIndex,
 }: TemplateItemProps) => {
   const { id, title, content } = template;
 
@@ -29,12 +35,21 @@ export const TemplateItem = ({
   return (
     <div
       onClick={() => handleSelectTemplateClick(id)}
-      className="flex justify-between items-center px-2 h-full cursor-pointer"
+      className="flex justify-between items-center pr-3 h-full cursor-pointer"
     >
       <Text size="lg">{title}</Text>
-      <div onClick={copyToClipboard} className="hover:opacity-50">
+      <button
+        ref={copyButtonRef}
+        onClick={(e) => {
+          e.stopPropagation();
+          copyToClipboard();
+        }}
+        onFocus={onCopyButtonFocus}
+        tabIndex={copyTabIndex}
+        className="hover:opacity-50"
+      >
         <HiOutlineClipboardCopy size={18} />
-      </div>
+      </button>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { TemplateItem } from "./TemplateItem";
 
 import { Status, Template } from "@/types";
+import { useRovingTabIndex } from "@/hooks/useRovingTabIndex";
 
 type TemplatesProps = {
   templates: Template[];
@@ -15,15 +16,17 @@ export const Templates = ({
   setStatus,
   setSectedId,
 }: TemplatesProps) => {
+  const { active, setActive, itemRefs, handleKeyDown } = useRovingTabIndex({
+    itemCount: templates.length,
+  });
+
   return (
     <div>
-      <ul className="flex flex-col space-y-1.5">
-        {templates.map((template) => (
+      <ul className="flex flex-col space-y-1.5" onKeyDown={handleKeyDown}>
+        {templates.map((template, index) => (
           <li
             className={`py-1 rounded-lg ${
-              template.id === selectedId
-                ? "opacity-60 bg-green-200"
-                : ""
+              template.id === selectedId ? "opacity-60 bg-green-200" : ""
             }`}
             key={template.id}
           >
@@ -31,6 +34,9 @@ export const Templates = ({
               template={template}
               setStatus={setStatus}
               setSectedId={setSectedId}
+              copyButtonRef={(el) => (itemRefs.current[index] = el)}
+              onCopyButtonFocus={() => setActive(index)}
+              copyTabIndex={index === active ? 0 : -1}
             />
           </li>
         ))}
