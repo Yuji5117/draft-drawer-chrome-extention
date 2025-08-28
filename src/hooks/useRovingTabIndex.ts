@@ -18,8 +18,15 @@ export const useRovingTabIndex = ({
 }: UseRovingTabIndexProps): UseRovingTabIndexReturn => {
   const itemRefs = useRef<(HTMLElement | null)[]>([]);
   const [active, setActive] = useState<number>(initialIndex);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
+    // 初回マウント時は何もしない。初期表示時は、検索欄へフォーカスを当てたいため。
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     const el = itemRefs.current[active];
     if (el && document.activeElement !== el) {
       el.focus({ preventScroll: true });
