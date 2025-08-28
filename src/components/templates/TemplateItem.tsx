@@ -29,12 +29,18 @@ export const TemplateItem = ({
   return (
     <div
       onClick={() => handleSelectTemplateClick(id)}
-      className="flex justify-between items-center px-2 h-full cursor-pointer"
+      className="flex justify-between items-center pr-3 h-full cursor-pointer"
     >
       <Text size="lg">{title}</Text>
-      <div onClick={copyToClipboard} className="hover:opacity-50">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          copyToClipboard();
+        }}
+        className="hover:opacity-50"
+      >
         <HiOutlineClipboardCopy size={18} />
-      </div>
+      </button>
     </div>
   );
 };
