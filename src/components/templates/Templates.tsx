@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { TemplateItem } from "./TemplateItem";
 
 import { Status, Template } from "@/types";
@@ -15,10 +16,21 @@ export const Templates = ({
   setStatus,
   setSectedId,
 }: TemplatesProps) => {
+  const copyButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [active, setActive] = useState<number>(0);
+
+  const handleUlOnFocus = () => {
+    copyButtonRefs.current[active]?.focus();
+  };
+
   return (
     <div>
-      <ul className="flex flex-col space-y-1.5" tabIndex={0}>
-        {templates.map((template) => (
+      <ul
+        className="flex flex-col space-y-1.5"
+        tabIndex={0}
+        onFocus={handleUlOnFocus}
+      >
+        {templates.map((template, index) => (
           <li
             className={`py-1 rounded-lg ${
               template.id === selectedId ? "opacity-60 bg-green-200" : ""
@@ -29,6 +41,7 @@ export const Templates = ({
               template={template}
               setStatus={setStatus}
               setSectedId={setSectedId}
+              copyButtonRef={(el) => (copyButtonRefs.current[index] = el)}
             />
           </li>
         ))}

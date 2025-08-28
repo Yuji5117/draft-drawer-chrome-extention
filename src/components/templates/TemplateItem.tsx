@@ -8,12 +8,14 @@ type TemplateItemProps = {
   template: Template;
   setStatus: React.Dispatch<React.SetStateAction<Status>>;
   setSectedId: (value: React.SetStateAction<string>) => void;
+  copyButtonRef?: (el: HTMLButtonElement | null) => void;
 };
 
 export const TemplateItem = ({
   template,
   setStatus,
   setSectedId,
+  copyButtonRef,
 }: TemplateItemProps) => {
   const { id, title, content } = template;
 
@@ -33,6 +35,7 @@ export const TemplateItem = ({
     >
       <Text size="lg">{title}</Text>
       <button
+        ref={copyButtonRef}
         onClick={(e) => {
           e.stopPropagation();
           copyToClipboard();
