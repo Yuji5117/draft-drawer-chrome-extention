@@ -23,12 +23,38 @@ export const Templates = ({
     copyButtonRefs.current[active]?.focus();
   };
 
+  useEffect(() => {
+    copyButtonRefs.current[active]?.focus();
+  }, [active]);
+
+  const handleUlOnKeyDown = (e: React.KeyboardEvent<HTMLUListElement>) => {
+    switch (e.key) {
+      case "ArrowDown":
+      case "ArrowRight":
+        setActive((prev) => Math.min(prev + 1, templates.length - 1));
+        break;
+      case "ArrowUp":
+      case "ArrowLeft":
+        setActive((prev) => Math.max(prev - 1, 0));
+        break;
+      case "Home":
+        setActive(0);
+        break;
+      case "End":
+        setActive(templates.length - 1);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div>
       <ul
         className="flex flex-col space-y-1.5"
         tabIndex={0}
         onFocus={handleUlOnFocus}
+        onKeyDown={handleUlOnKeyDown}
       >
         {templates.map((template, index) => (
           <li
