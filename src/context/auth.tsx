@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (!mounted) return;
-      
+
       if (firebaseUser) {
         const userRef = doc(db, `users/${firebaseUser.uid}`);
         const userSnapshot = await getDoc(userRef);
