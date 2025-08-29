@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, UseFormRegister } from "react-hook-form";
 
 type FieldValues = {
@@ -10,7 +10,11 @@ type SearchFormContainerProps = {
 };
 
 export const SearchFormContainer = ({ children }: SearchFormContainerProps) => {
-  const { register } = useForm<FieldValues>();
+  const { register, setFocus } = useForm<FieldValues>();
+
+  useEffect(() => {
+    setFocus("query");
+  }, [setFocus]);
 
   return <div className="flex">{children(register)}</div>;
 };
