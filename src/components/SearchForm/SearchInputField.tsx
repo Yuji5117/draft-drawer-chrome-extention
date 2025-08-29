@@ -11,6 +11,7 @@ export const SearchInputField = ({
 }: SearchInputFieldProps) => {
   return (
     <input
+      data-search-input
       type="text"
       placeholder={placeholder}
       className="bg-[#A2C6A1] bg-opacity-80 text-white placeholder-white placeholder-opacity-50 outline-none w-60 h-9 pl-3 rounded-sm"
