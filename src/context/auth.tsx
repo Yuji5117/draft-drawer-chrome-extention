@@ -4,6 +4,7 @@ import { createContext, useEffect, useState } from "react";
 
 import { auth, db } from "@/config/firebase";
 import { User } from "@/types";
+import { storage } from "@/libs/storage";
 
 type UserContextType = User | null | undefined;
 
@@ -13,14 +14,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserContextType>();
 
   useEffect(() => {
+    let mounted = true;
+
+    const initializeAuth = async () => {
+      const cachedUser = await storage.get("user");
+      if (mounted && cachedUser) {
+        setUser(cachedUser);
+      }
+    };
+
+    initializeAuth();
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!mounted) return;
+      
       if (firebaseUser) {
         const userRef = doc(db, `users/${firebaseUser.uid}`);
         const userSnapshot = await getDoc(userRef);
 
         if (userSnapshot.exists()) {
           const userData = userSnapshot.data() as User;
-          setUser({ id: userData.id, email: userData.email });
+          const userInfo = { id: userData.id, email: userData.email };
+          await storage.set("user", userInfo);
+          setUser(userInfo);
         } else {
           const appUser = {
             id: firebaseUser.uid,
@@ -30,14 +46,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           };
 
           await setDoc(userRef, appUser);
-          setUser({ id: appUser.id, email: appUser.email });
+          const userInfo = { id: appUser.id, email: appUser.email };
+          await storage.set("user", userInfo);
+          setUser(userInfo);
         }
       } else {
+        await storage.remove("user");
         setUser(null);
       }
     });
 
-    return unsubscribe;
+    return () => {
+      mounted = false;
+      unsubscribe();
+    };
   }, []);
 
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
