@@ -29,10 +29,10 @@ export const useRovingTabIndex = ({
 
     const el = itemRefs.current[active];
     const activeEl = document.activeElement;
-    const isSearchFocused = activeEl?.matches('[data-search-input]');
+    const isSearchFocused = activeEl?.matches("[data-search-input]");
     const isAlreadyFocused = activeEl === el;
     const shouldFocus = el && !isAlreadyFocused && !isSearchFocused;
-    
+
     if (shouldFocus) {
       el.focus({ preventScroll: true });
     }
