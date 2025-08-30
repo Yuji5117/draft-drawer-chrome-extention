@@ -15,9 +15,12 @@ export const createTemplate = async (
 ): Promise<Template> => {
   const newTemplate = await createDoc<CreateTemplateDTO>("templates", data);
 
-  const currentCachedTemplates = await storage.get("templates");
-  if (currentCachedTemplates) {
-    await storage.set("templates", [...currentCachedTemplates, newTemplate]);
+  const templatesCache = await storage.get("templatesCache");
+  if (templatesCache?.data) {
+    await storage.set("templatesCache", {
+      data: [...templatesCache.data, newTemplate],
+      lastUpdated: Date.now(),
+    });
   }
 
   return newTemplate;

@@ -8,12 +8,15 @@ import { Template } from "@/types";
 export const deleteTemplate = async (id: string): Promise<void> => {
   await deleteDocFn("templates", id);
 
-  const currentCachedTemplates = await storage.get("templates");
-  if (currentCachedTemplates) {
-    const updatedTemplates = currentCachedTemplates.filter(
+  const templatesCache = await storage.get("templatesCache");
+  if (templatesCache?.data) {
+    const updatedTemplates = templatesCache.data.filter(
       (template) => template.id !== id
     );
-    await storage.set("templates", updatedTemplates);
+    await storage.set("templatesCache", {
+      data: updatedTemplates,
+      lastUpdated: Date.now(),
+    });
   }
 };
 

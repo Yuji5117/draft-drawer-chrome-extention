@@ -5,11 +5,14 @@ import { Template } from "@/types";
 import { storage } from "@/libs/storage";
 
 export const getTemplates = async (): Promise<Template[]> => {
-  const cachedTemplates = await storage.get("templates");
-  if (cachedTemplates) return cachedTemplates;
+  const templatesCache = await storage.get("templatesCache");
+  if (templatesCache?.data) return templatesCache.data;
 
   const templatesFromDB = await getAllDocs<Template>("templates");
-  await storage.set("templates", templatesFromDB);
+  await storage.set("templatesCache", {
+    data: templatesFromDB,
+    lastUpdated: Date.now(),
+  });
 
   return templatesFromDB;
 };

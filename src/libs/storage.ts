@@ -2,7 +2,10 @@ import { Template, User } from "@/types";
 
 type StorageSchema = {
   user: User;
-  templates: Template[];
+  templatesCache: {
+    data: Template[];
+    lastUpdated: number;
+  };
 };
 
 type StorageKeys = keyof StorageSchema;
