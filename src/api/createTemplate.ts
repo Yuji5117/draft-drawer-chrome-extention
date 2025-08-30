@@ -17,7 +17,7 @@ export const createTemplate = async (
 
   const currentCachedTemplates = await storage.get("templates");
   if (currentCachedTemplates) {
-    storage.set("templates", [...currentCachedTemplates, newTemplate]);
+    await storage.set("templates", [...currentCachedTemplates, newTemplate]);
   }
 
   return newTemplate;
