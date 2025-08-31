@@ -15,6 +15,7 @@ import { getAllDocs } from "@/libs/firebase";
 
 const SYNC_DELAY_MINUTES = 1;
 const SYNC_PERIOD_MINUTES = 10;
+const CACHE_EXPIRY_MS = 30 * 60 * 1000;
 
 const signIn = async (sendResponse: (response: AuthResponse) => void) => {
   try {
@@ -85,6 +86,15 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+const updateCacheFromDB = async (): Promise<void> => {
+  const templatesFromDB = await getAllDocs<Template>("templates");
+  await storage.set("templatesCache", {
+    data: templatesFromDB,
+    lastUpdated: Date.now(),
+  });
+  console.log("Cache updated from DB");
+};
+
 const forceUpdateTemplatesCache = async () => {
   try {
     const user = await storage.get("user");
@@ -93,13 +103,16 @@ const forceUpdateTemplatesCache = async () => {
       return;
     }
 
-    const templatesFromDB = await getAllDocs<Template>("templates");
-    await storage.set("templatesCache", {
-      data: templatesFromDB,
-      lastUpdated: Date.now(),
-    });
+    const templatesCache = await storage.get("templatesCache");
+    if (templatesCache?.lastUpdated) {
+      const isExpired = Date.now() - templatesCache.lastUpdated > CACHE_EXPIRY_MS;
+      if (!isExpired) {
+        console.log("Cache still fresh, skipping update");
+        return;
+      }
+    }
 
-    console.log("Force updated!!");
+    await updateCacheFromDB();
   } catch (error) {
     console.error("Failed to update templates cache:", error);
   }
