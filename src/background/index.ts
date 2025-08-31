@@ -3,7 +3,15 @@ import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { getTemplates } from "./../api/getTemplates";
 
 import { auth } from "@/config/firebase";
-import { User, AuthResponse, TemplatesResponse, ChromeMessage } from "@/types";
+import {
+  User,
+  AuthResponse,
+  TemplatesResponse,
+  ChromeMessage,
+  Template,
+} from "@/types";
+import { storage } from "@/libs/storage";
+import { getAllDocs } from "@/libs/firebase";
 
 const signIn = async (sendResponse: (response: AuthResponse) => void) => {
   try {
@@ -74,9 +82,29 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+const forceUpdateTemplatesCache = async () => {
+  try {
+    const user = await storage.get("user");
+    if (!user) {
+      console.log("User not logged in, skipping template update");
+      return;
+    }
+
+    const templatesFromDB = await getAllDocs<Template>("templates");
+    await storage.set("templatesCache", {
+      data: templatesFromDB,
+      lastUpdated: Date.now(),
+    });
+
+    console.log("Force updated!!");
+  } catch (error) {
+    console.error("Failed to update templates cache:", error);
+  }
+};
+
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === "syncTemplates") {
-    console.log("Execute");
+    await forceUpdateTemplatesCache();
   }
 });
 
