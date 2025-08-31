@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { updateDocFn } from "@/libs/firebase";
 import { queryClient } from "@/libs/react-query";
 import { Template } from "@/types";
+import { storage } from "@/libs/storage";
 
 type UpdateTemplateDTO = {
   data: { title?: string; content?: string };
@@ -15,7 +16,24 @@ export const updateTemplate = async ({
   data,
   templateId,
 }: UpdateTemplateDTO): Promise<Template> => {
-  return updateDocFn<UpdateTemplateData>("templates", templateId, data);
+  const updatedTemplate = await updateDocFn<UpdateTemplateData>(
+    "templates",
+    templateId,
+    data
+  );
+
+  const templatesCache = await storage.get("templatesCache");
+  if (templatesCache?.data) {
+    const updatedTemplates = templatesCache.data.map(template =>
+      template.id === templateId ? updatedTemplate : template
+    );
+    await storage.set("templatesCache", {
+      data: updatedTemplates,
+      lastUpdated: Date.now(),
+    });
+  }
+
+  return updatedTemplate;
 };
 
 export const useUpdateTemplate = () => {

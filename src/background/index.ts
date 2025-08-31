@@ -3,7 +3,19 @@ import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { getTemplates } from "./../api/getTemplates";
 
 import { auth } from "@/config/firebase";
-import { User, AuthResponse, TemplatesResponse, ChromeMessage } from "@/types";
+import {
+  User,
+  AuthResponse,
+  TemplatesResponse,
+  ChromeMessage,
+  Template,
+} from "@/types";
+import { storage } from "@/libs/storage";
+import { getAllDocs } from "@/libs/firebase";
+
+const SYNC_DELAY_MINUTES = 1;
+const SYNC_PERIOD_MINUTES = 10;
+const CACHE_EXPIRY_MS = 30 * 60 * 1000;
 
 const signIn = async (sendResponse: (response: AuthResponse) => void) => {
   try {
@@ -64,6 +76,51 @@ chrome.commands.onCommand.addListener(async (command) => {
     } catch (error) {
       console.error("Failed to open popup via keyboard shortcut:", error);
     }
+  }
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.alarms.create("syncTemplates", {
+    delayInMinutes: SYNC_DELAY_MINUTES,
+    periodInMinutes: SYNC_PERIOD_MINUTES,
+  });
+});
+
+const updateCacheFromDB = async (): Promise<void> => {
+  const templatesFromDB = await getAllDocs<Template>("templates");
+  await storage.set("templatesCache", {
+    data: templatesFromDB,
+    lastUpdated: Date.now(),
+  });
+  console.log("Cache updated from DB");
+};
+
+const forceUpdateTemplatesCache = async () => {
+  try {
+    const user = await storage.get("user");
+    if (!user) {
+      console.log("User not logged in, skipping template update");
+      return;
+    }
+
+    const templatesCache = await storage.get("templatesCache");
+    if (templatesCache?.lastUpdated) {
+      const isExpired = Date.now() - templatesCache.lastUpdated > CACHE_EXPIRY_MS;
+      if (!isExpired) {
+        console.log("Cache still fresh, skipping update");
+        return;
+      }
+    }
+
+    await updateCacheFromDB();
+  } catch (error) {
+    console.error("Failed to update templates cache:", error);
+  }
+};
+
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+  if (alarm.name === "syncTemplates") {
+    await forceUpdateTemplatesCache();
   }
 });
 
