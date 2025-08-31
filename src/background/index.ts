@@ -13,6 +13,9 @@ import {
 import { storage } from "@/libs/storage";
 import { getAllDocs } from "@/libs/firebase";
 
+const SYNC_DELAY_MINUTES = 1;
+const SYNC_PERIOD_MINUTES = 10;
+
 const signIn = async (sendResponse: (response: AuthResponse) => void) => {
   try {
     const { token } = await chrome.identity.getAuthToken({
@@ -77,8 +80,8 @@ chrome.commands.onCommand.addListener(async (command) => {
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.alarms.create("syncTemplates", {
-    delayInMinutes: 1,
-    periodInMinutes: 10,
+    delayInMinutes: SYNC_DELAY_MINUTES,
+    periodInMinutes: SYNC_PERIOD_MINUTES,
   });
 });
 
