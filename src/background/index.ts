@@ -67,6 +67,19 @@ chrome.commands.onCommand.addListener(async (command) => {
   }
 });
 
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.alarms.create("syncTemplates", {
+    delayInMinutes: 1,
+    periodInMinutes: 10,
+  });
+});
+
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+  if (alarm.name === "syncTemplates") {
+    console.log("Execute");
+  }
+});
+
 chrome.runtime.onMessage.addListener(
   (message: ChromeMessage, _, sendResponse) => {
     switch (message.type) {

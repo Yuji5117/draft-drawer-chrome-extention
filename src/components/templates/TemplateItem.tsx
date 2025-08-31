@@ -40,9 +40,10 @@ export const TemplateItem = ({
       <Text size="lg">{title}</Text>
       <button
         ref={copyButtonRef}
-        onClick={(e) => {
+        onClick={async (e) => {
           e.stopPropagation();
-          copyToClipboard();
+          await copyToClipboard();
+          window.close();
         }}
         onFocus={onCopyButtonFocus}
         tabIndex={copyTabIndex}
