@@ -42,4 +42,12 @@ describe("Button Component", () => {
       "py-3 px-8 text-lg"
     );
   });
+
+  it("should apply default variant and size", () => {
+    render(<Button>添削を依頼</Button>);
+    expect(screen.getByRole("button", { name: "添削を依頼" })).toHaveClass(
+      "bg-primary text-white",
+      "py-2 px-6 text-md"
+    );
+  });
 });
