@@ -1,5 +1,5 @@
 import { Button } from "../ui/Button";
-import { Text } from "../ui/Text";
+import { Text } from "../ui/Text/Text";
 
 import { useDeleteTemplate } from "@/api/deleteTemplate";
 import { Status, Template } from "@/types";
