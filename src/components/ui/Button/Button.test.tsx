@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Button } from "./Button";
 
 describe("Button Component", () => {
@@ -75,5 +76,23 @@ describe("Button Component", () => {
     expect(screen.getByRole("button", { name: "添削を依頼" })).toHaveClass(
       "hover:opacity-80"
     );
+  });
+
+  it("should call onClick when Clicked", async () => {
+    const mockClick = vi.fn();
+    render(<Button onClick={mockClick}>添削を依頼</Button>);
+    await userEvent.click(screen.getByRole("button", { name: "添削を依頼" }));
+    expect(mockClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("should not call onClick when disabled", async () => {
+    const mockClick = vi.fn();
+    render(
+      <Button isDisabled={true} onClick={mockClick}>
+        添削を依頼
+      </Button>
+    );
+    await userEvent.click(screen.getByRole("button", { name: "添削を依頼" }));
+    expect(mockClick).not.toHaveBeenCalled();
   });
 });
