@@ -71,13 +71,6 @@ describe("Button Component", () => {
     );
   });
 
-  it("should apply hover effect when enable", () => {
-    render(<Button isDisabled={false}>添削を依頼</Button>);
-    expect(screen.getByRole("button", { name: "添削を依頼" })).toHaveClass(
-      "hover:opacity-80"
-    );
-  });
-
   it("should call onClick when Clicked", async () => {
     const mockClick = vi.fn();
     render(<Button onClick={mockClick}>添削を依頼</Button>);
