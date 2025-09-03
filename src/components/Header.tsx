@@ -3,7 +3,7 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { SearchFormContainer } from "./SearchForm";
 import { SearchIcon } from "./SearchForm/SearchIcon";
 import { SearchInputField } from "./SearchForm/SearchInputField";
-import { Text } from "./ui/Text";
+import { Text } from "./ui/Text/Text";
 
 import { signout } from "@/libs/firebase-auth";
 import { Status } from "@/types";
