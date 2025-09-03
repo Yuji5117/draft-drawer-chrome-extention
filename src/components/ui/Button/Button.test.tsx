@@ -21,4 +21,25 @@ describe("Button Component", () => {
       "border border-red text-red"
     );
   });
+
+  it("should apply sm size", () => {
+    render(<Button size="sm">添削を依頼</Button>);
+    expect(screen.getByRole("button", { name: "添削を依頼" })).toHaveClass(
+      "py-1 px-4 text-sm"
+    );
+  });
+
+  it("should apply md size", () => {
+    render(<Button size="md">添削を依頼</Button>);
+    expect(screen.getByRole("button", { name: "添削を依頼" })).toHaveClass(
+      "py-2 px-6 text-md"
+    );
+  });
+
+  it("should apply lg size", () => {
+    render(<Button size="lg">添削を依頼</Button>);
+    expect(screen.getByRole("button", { name: "添削を依頼" })).toHaveClass(
+      "py-3 px-8 text-lg"
+    );
+  });
 });
