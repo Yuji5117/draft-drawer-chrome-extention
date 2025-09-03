@@ -50,4 +50,30 @@ describe("Button Component", () => {
       "py-2 px-6 text-md"
     );
   });
+
+  it("should be disabled when isDisabled is true", () => {
+    render(<Button isDisabled={true}>添削を依頼</Button>);
+    expect(screen.getByRole("button", { name: "添削を依頼" })).toBeDisabled();
+  });
+
+  it("should have disabled styling when isDisabled is true", () => {
+    render(<Button isDisabled={true}>添削を依頼</Button>);
+    expect(screen.getByRole("button", { name: "添削を依頼" })).toHaveClass(
+      "opacity-50 pointer-events-none"
+    );
+  });
+
+  it("should not have disabled styling when isDisabled is false", () => {
+    render(<Button isDisabled={false}>添削を依頼</Button>);
+    expect(screen.getByRole("button", { name: "添削を依頼" })).not.toHaveClass(
+      "opacity-50 pointer-events-none"
+    );
+  });
+
+  it("should apply hover effect when enable", () => {
+    render(<Button isDisabled={false}>添削を依頼</Button>);
+    expect(screen.getByRole("button", { name: "添削を依頼" })).toHaveClass(
+      "hover:opacity-80"
+    );
+  });
 });
